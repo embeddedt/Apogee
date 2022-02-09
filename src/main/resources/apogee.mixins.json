@@ -6,13 +6,19 @@
   "mixins": [
     "AnvilMenuMixin",
     "CombatRulesMixin",
+    "DamageEnchantmentMixin",
+    "DigDurabilityEnchantmentMixin",
+    "DiggingEnchantmentMixin",
     "FallingBlockEntityMixin",
     "ItemMixin",
     "LivingEntityMixin",
+    "LootBonusEnchantmentMixin",
+    "OxygenEnchantmentMixin",
     "ProtectionEnchantmentMixin",
     "SpawnerBlockMixin",
     "SpawnerBlockEntityMixin",
-    "SugarCaneBlockMixin"
+    "SugarCaneBlockMixin",
+    "SweepingEdgeEnchantmentMixin"
   ],
   "client": [
     "client.AnvilScreenMixin"
