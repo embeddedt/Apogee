@@ -1,0 +1,14 @@
+{
+	"type": "apogee:spawner_modifier",
+	"conditions": [{
+		"type": "apogee:module",
+		"module": "spawner"
+	}],
+	"mainhand": {
+		"item": "minecraft:nether_star"
+	},
+	"stat_changes": [{
+		"id": "ignore_players",
+		"value": true
+	}]
+}

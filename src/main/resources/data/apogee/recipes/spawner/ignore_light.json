@@ -1,0 +1,14 @@
+{
+	"type": "apogee:spawner_modifier",
+	"conditions": [{
+		"type": "apogee:module",
+		"module": "spawner"
+	}],
+	"mainhand": {
+		"item": "minecraft:soul_lantern"
+	},
+	"stat_changes": [{
+		"id": "ignore_light",
+		"value": true
+	}]
+}
