@@ -4,15 +4,15 @@
   "version": "${version}",
   "name": "Apogee",
   "description": "",
-  "authors": [],
+  "authors": [
+    "embeddedt",
+    "Shadows-of-Fire"
+  ],
   "contact": {},
   "license": "MIT",
   "icon": "assets/apogee/icon.png",
   "environment": "*",
   "entrypoints": {
-    "client": [
-      "com.embeddedt.apogee.client.ApogeeClient"
-    ],
     "main": [
       "com.embeddedt.apogee.Apogee"
     ],
@@ -26,7 +26,6 @@
   ],
   "depends": {
     "fabricloader": ">=0.13.1",
-    "fabric": "*",
     "minecraft": "1.18.1"
   },
   "accessWidener" : "apogee.accesswidener",
