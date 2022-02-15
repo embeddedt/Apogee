@@ -17,8 +17,7 @@
       "com.embeddedt.apogee.Apogee"
     ],
     "rei": [
-      "com.embeddedt.apogee.spawner.rei.SpawnerREIClientPlugin",
-      "com.embeddedt.apogee.spawner.rei.SpawnerREIServerPlugin"
+      "com.embeddedt.apogee.spawner.rei.SpawnerREIClientPlugin"
     ]
   },
   "mixins": [
