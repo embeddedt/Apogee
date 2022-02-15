@@ -29,7 +29,6 @@ public class SpawnerHwylaPlugin implements IWailaPlugin, IComponentProvider, ISe
 
 	@Override
 	public void register(IRegistrar reg) {
-		if (!Apogee.enableSpawner) return;
 		reg.registerComponentProvider(this, TooltipPosition.BODY, SpawnerBlock.class);
 		reg.registerBlockDataProvider(this, SpawnerBlockEntity.class);
 	}

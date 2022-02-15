@@ -67,12 +67,10 @@ public abstract class SpawnerBlockMixin extends BaseEntityBlock {
      */
     @Inject(method = "getCloneItemStack", at = @At("HEAD"), cancellable = true)
     public void getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state, CallbackInfoReturnable<ItemStack> cir) {
-        if(Apogee.enableSpawner) {
-            ItemStack s = new ItemStack(this);
-            BlockEntity te = level.getBlockEntity(pos);
-            if (te != null) s.getOrCreateTag().put("BlockEntityTag", te.saveWithoutMetadata());
-            cir.setReturnValue(s);
-        }
+        ItemStack s = new ItemStack(this);
+        BlockEntity te = level.getBlockEntity(pos);
+        if (te != null) s.getOrCreateTag().put("BlockEntityTag", te.saveWithoutMetadata());
+        cir.setReturnValue(s);
     }
 
     @Override
