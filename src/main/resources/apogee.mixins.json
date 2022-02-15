@@ -10,6 +10,7 @@
     "DigDurabilityEnchantmentMixin",
     "DiggingEnchantmentMixin",
     "FallingBlockEntityMixin",
+    "GrowingBlockMixin",
     "ItemMixin",
     "LivingEntityMixin",
     "LootBonusEnchantmentMixin",
@@ -17,7 +18,6 @@
     "ProtectionEnchantmentMixin",
     "SpawnerBlockMixin",
     "SpawnerBlockEntityMixin",
-    "SugarCaneBlockMixin",
     "SweepingEdgeEnchantmentMixin"
   ],
   "client": [
