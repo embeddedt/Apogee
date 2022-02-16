@@ -1,0 +1,26 @@
+name: Build mod
+
+on: [ push, pull_request ]
+
+jobs:
+  build:
+    name: Build mod
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        cache: 'gradle'
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    - name: Build with Gradle
+      run: ./gradlew --no-daemon build
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: apogee
+        path: build/libs
