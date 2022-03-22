@@ -126,7 +126,11 @@ modrinth {
 }
 
 curseforge {
-  apiKey = System.getenv("CURSEFORGE_TOKEN")
+  if(System.getenv("CURSEFORGE_TOKEN") != null) {
+    apiKey = System.getenv("CURSEFORGE_TOKEN")
+  } else {
+    apiKey = "none"
+  }
   project {
     id = '597093'
     changelog = 'https://github.com/embeddedt/Apogee/commits/main'
