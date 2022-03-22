@@ -3,7 +3,7 @@
   "id": "apogee",
   "version": "${version}",
   "name": "Apogee",
-  "description": "",
+  "description": "A small reimagining of Apotheosis for Fabric 1.18+.",
   "authors": [
     "embeddedt",
     "Shadows-of-Fire"
