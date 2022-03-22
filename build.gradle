@@ -3,6 +3,7 @@ plugins {
     id 'maven-publish'
     id 'org.quiltmc.quilt-mappings-on-loom' version '4.+'
     id "com.modrinth.minotaur" version "2.+"
+    id 'com.matthewprenger.cursegradle' version '1.4.0'
 }
 
 version = project.mod_version
@@ -122,4 +123,25 @@ modrinth {
     uploadFile = remapJar // Tells Minotaur to use the remapped jar
     gameVersions = ['1.18.1'] // An array of game versions the version supports
     loaders = ['fabric'] // Self-explanatory.
+}
+
+curseforge {
+  apiKey = System.getenv("CURSEFORGE_TOKEN")
+  project {
+    id = '597093'
+    changelog = 'https://github.com/embeddedt/Apogee/commits/main'
+    releaseType = 'release'
+    addGameVersion '1.18.1'
+    addGameVersion 'Fabric'
+    addGameVersion 'Java 17'
+
+    mainArtifact(remapJar) {
+      displayName = "Apogee $project.version"
+    }
+  }
+}
+
+task publishToModSites {
+    publishToModSites.dependsOn modrinth
+    publishToModSites.dependsOn curseforge
 }
