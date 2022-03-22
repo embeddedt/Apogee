@@ -5,20 +5,12 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "AnvilMenuMixin",
-    "CombatRulesMixin",
-    "DamageEnchantmentMixin",
-    "DigDurabilityEnchantmentMixin",
-    "DiggingEnchantmentMixin",
     "FallingBlockEntityMixin",
     "GrowingBlockMixin",
     "ItemMixin",
     "LivingEntityMixin",
-    "LootBonusEnchantmentMixin",
-    "OxygenEnchantmentMixin",
-    "ProtectionEnchantmentMixin",
     "SpawnerBlockMixin",
-    "SpawnerBlockEntityMixin",
-    "SweepingEdgeEnchantmentMixin"
+    "SpawnerBlockEntityMixin"
   ],
   "client": [
     "client.AnvilScreenMixin"
