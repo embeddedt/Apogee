@@ -2,6 +2,7 @@ plugins {
     id 'fabric-loom' version '0.11-SNAPSHOT'
     id 'maven-publish'
     id 'org.quiltmc.quilt-mappings-on-loom' version '4.+'
+    id "com.modrinth.minotaur" version "2.+"
 }
 
 version = project.mod_version
@@ -113,4 +114,12 @@ publishing {
         // The repositories here will be used for publishing your artifact, not for
         // retrieving dependencies.
     }
+}
+
+modrinth {
+    token = System.getenv("MODRINTH_TOKEN")
+    projectId = '75XwC4YV' // The ID of your Modrinth project. Slugs will not work.
+    uploadFile = remapJar // Tells Minotaur to use the remapped jar
+    gameVersions = ['1.18.1'] // An array of game versions the version supports
+    loaders = ['fabric'] // Self-explanatory.
 }
