@@ -37,6 +37,11 @@ public abstract class SpawnerBlockEntityMixin extends BlockEntity implements IEx
     public boolean hasNoAI = false;
 
     @Override
+    public BaseSpawner getSpawner() {
+        return spawner;
+    }
+
+    @Override
     public boolean doesIgnorePlayers() {
         return ignoresPlayers;
     }
