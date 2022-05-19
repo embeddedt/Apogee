@@ -9,7 +9,7 @@
     "Shadows-of-Fire"
   ],
   "contact": {},
-  "license": "MIT",
+  "license": "LGPLv3",
   "icon": "assets/apogee/icon.png",
   "environment": "*",
   "entrypoints": {
