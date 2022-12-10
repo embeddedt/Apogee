@@ -16,7 +16,7 @@
     "main": [
       "com.embeddedt.apogee.Apogee"
     ],
-    "rei": [
+    "rei_client": [
       "com.embeddedt.apogee.spawner.rei.SpawnerREIClientPlugin"
     ]
   },
