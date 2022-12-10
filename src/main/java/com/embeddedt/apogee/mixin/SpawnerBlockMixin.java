@@ -14,7 +14,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -54,10 +53,10 @@ public abstract class SpawnerBlockMixin extends BaseEntityBlock {
 
     @Inject(
             method = "spawnAfterBreak",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/SpawnerBlock;popExperience(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;I)V"),
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/BaseEntityBlock;spawnAfterBreak(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/item/ItemStack;Z)V", shift = At.Shift.AFTER),
             cancellable = true
     )
-    private void skipExperienceIfSilk(BlockState state, ServerLevel level, BlockPos pos, ItemStack stack, CallbackInfo ci) {
+    private void skipExperienceIfSilk(BlockState state, ServerLevel level, BlockPos pos, ItemStack stack, boolean dropExperience, CallbackInfo ci) {
         if(EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, stack) >= SpawnerModule.spawnerSilkLevel)
             ci.cancel();
     }
@@ -121,7 +120,7 @@ public abstract class SpawnerBlockMixin extends BaseEntityBlock {
                 if (tag.contains("SpawnData")) {
                     String name = tag.getCompound("SpawnData").getCompound("entity").getString("id");
                     String key = "entity." + name.replace(':', '.');
-                    tooltip.add(concat(new TranslatableComponent("misc.apogee.entity"), I18n.exists(key) ? I18n.get(key) : name));
+                    tooltip.add(concat(Component.translatable("misc.apogee.entity"), I18n.exists(key) ? I18n.get(key) : name));
                 }
                 if (tag.contains("MinSpawnDelay")) tooltip.add(concat(SpawnerStats.MIN_DELAY.name(), tag.getShort("MinSpawnDelay")));
                 if (tag.contains("MaxSpawnDelay")) tooltip.add(concat(SpawnerStats.MAX_DELAY.name(), tag.getShort("MaxSpawnDelay")));
@@ -135,7 +134,7 @@ public abstract class SpawnerBlockMixin extends BaseEntityBlock {
                 if (tag.getBoolean("ignore_light")) tooltip.add(SpawnerStats.IGNORE_LIGHT.name().withStyle(ChatFormatting.DARK_GREEN));
                 if (tag.getBoolean("no_ai")) tooltip.add(SpawnerStats.NO_AI.name().withStyle(ChatFormatting.DARK_GREEN));
             } else {
-                tooltip.add(new TranslatableComponent("misc.apogee.shift_stats").withStyle(ChatFormatting.GRAY));
+                tooltip.add(Component.translatable("misc.apogee.shift_stats").withStyle(ChatFormatting.GRAY));
             }
         }
     }

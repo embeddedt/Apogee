@@ -3,7 +3,8 @@ package com.embeddedt.apogee.spawner.modifiers;
 import com.embeddedt.apogee.utils.IExtendedSpawner;
 import com.google.gson.JsonElement;
 
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 
 public interface SpawnerStat<T> {
@@ -30,11 +31,11 @@ public interface SpawnerStat<T> {
 
 	Class<T> getTypeClass();
 
-	default TranslatableComponent name() {
-		return new TranslatableComponent("stat.apogee." + getId());
+	default MutableComponent name() {
+		return Component.translatable("stat.apogee." + getId());
 	}
 
-	default TranslatableComponent desc() {
-		return new TranslatableComponent("stat.apogee." + getId() + ".desc");
+	default MutableComponent desc() {
+		return Component.translatable("stat.apogee." + getId() + ".desc");
 	}
 }
