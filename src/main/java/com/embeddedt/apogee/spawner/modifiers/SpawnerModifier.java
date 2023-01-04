@@ -3,8 +3,6 @@ package com.embeddedt.apogee.spawner.modifiers;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import com.embeddedt.apogee.utils.IExtendedSpawner;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonArray;
@@ -124,7 +122,6 @@ public class SpawnerModifier implements Recipe<Container> {
 		return SpawnerModifier.TYPE;
 	}
 
-	@Nullable
 	public static SpawnerModifier findMatch(SpawnerBlockEntity tile, ItemStack mainhand, ItemStack offhand) {
 		List<SpawnerModifier> recipes = new ArrayList<>(tile.getLevel().getRecipeManager().getAllRecipesFor(SpawnerModifier.TYPE));
 		recipes.sort((r1, r2) -> r1.offHand == Ingredient.EMPTY ? r2.offHand == Ingredient.EMPTY ? 0 : 1 : -1);

@@ -4,6 +4,8 @@ import com.embeddedt.apogee.enchanting.CapturingEnchant;
 import com.embeddedt.apogee.spawner.modifiers.SpawnerModifier;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,13 +22,8 @@ public class Apogee implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        // This code runs as soon as Minecraft is in a mod-load-ready state.
-        // However, some things (like resources) may still be uninitialized.
-        // Proceed with mild caution.
-
-        LOGGER.info("Hello Fabric world!");
-        Registry.register(Registry.RECIPE_SERIALIZER, new ResourceLocation(MOD_ID, "spawner_modifier"), SpawnerModifier.SERIALIZER);
+        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, new ResourceLocation(MOD_ID, "spawner_modifier"), SpawnerModifier.SERIALIZER);
         CAPTURING = new CapturingEnchant();
-        Registry.register(Registry.ENCHANTMENT, new ResourceLocation(MOD_ID, "capturing"), CAPTURING);
+        Registry.register(BuiltInRegistries.ENCHANTMENT, new ResourceLocation(MOD_ID, "capturing"), CAPTURING);
     }
 }

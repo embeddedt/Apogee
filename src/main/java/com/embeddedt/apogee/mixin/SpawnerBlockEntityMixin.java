@@ -8,6 +8,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.*;
@@ -18,7 +19,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -99,10 +102,10 @@ public abstract class SpawnerBlockEntityMixin extends BlockEntity implements IEx
     private void overrideSpawnerLogic(BlockPos blockPos, BlockState blockState, CallbackInfo ci) {
         this.spawner = new BaseSpawner() {
             @Override
-            public void setEntityId(EntityType<?> pType) {
-                super.setEntityId(pType);
-                this.spawnPotentials = SimpleWeightedRandomList.single(this.nextSpawnData);
-                if (SpawnerBlockEntityMixin.this.level != null) this.delay(SpawnerBlockEntityMixin.this.level, SpawnerBlockEntityMixin.this.worldPosition);
+            public void setEntityId(EntityType<?> pType, @Nullable Level level, RandomSource random, BlockPos pos) {
+                super.setEntityId(pType, level, random, pos);
+                this.spawnPotentials = SimpleWeightedRandomList.single(this.getOrCreateNextSpawnData(level, random, pos));
+                if (level != null) this.delay(level, pos);
             }
 
             @Override
@@ -142,7 +145,7 @@ public abstract class SpawnerBlockEntityMixin extends BlockEntity implements IEx
             public void clientTick(Level pLevel, BlockPos pPos) {
                 if (!this.isActivated(pLevel, pPos)) {
                     this.oSpin = this.spin;
-                } else {
+                } else if(this.displayEntity != null) {
                     double d0 = pPos.getX() + pLevel.random.nextDouble();
                     double d1 = pPos.getY() + pLevel.random.nextDouble();
                     double d2 = pPos.getZ() + pLevel.random.nextDouble();
@@ -171,7 +174,8 @@ public abstract class SpawnerBlockEntityMixin extends BlockEntity implements IEx
                         boolean flag = false;
 
                         for (int i = 0; i < this.spawnCount; ++i) {
-                            CompoundTag compoundtag = this.nextSpawnData.getEntityToSpawn();
+                            SpawnData spawnData = this.getOrCreateNextSpawnData(pServerLevel, pServerLevel.getRandom(), pPos);
+                            CompoundTag compoundtag = spawnData.getEntityToSpawn();
                             Optional<EntityType<?>> optional = EntityType.by(compoundtag);
                             if (optional.isEmpty()) {
                                 this.delay(pServerLevel, pPos);
@@ -231,7 +235,7 @@ public abstract class SpawnerBlockEntityMixin extends BlockEntity implements IEx
                                         continue;
                                     }
 
-                                    if (this.nextSpawnData.getEntityToSpawn().size() == 1 && this.nextSpawnData.getEntityToSpawn().contains("id", 8)) {
+                                    if (spawnData.getEntityToSpawn().size() == 1 && spawnData.getEntityToSpawn().contains("id", 8)) {
                                         ((Mob) entity).finalizeSpawn(pServerLevel, pServerLevel.getCurrentDifficultyAt(entity.blockPosition()), MobSpawnType.SPAWNER, (SpawnGroupData) null, (CompoundTag) null);
                                     }
                                 }
@@ -269,6 +273,8 @@ public abstract class SpawnerBlockEntityMixin extends BlockEntity implements IEx
              * Checks if the requested entity passes spawn rule checks or not.
              */
             private boolean checkSpawnRules(Optional<EntityType<?>> optional, ServerLevelAccessor pServerLevel, BlockPos blockpos) {
+                if(this.nextSpawnData == null)
+                    return true;
                 if (this.nextSpawnData.getCustomSpawnRules().isPresent()) {
                     if (!optional.get().getCategory().isFriendly() && pServerLevel.getDifficulty() == Difficulty.PEACEFUL) {
                         return false;
@@ -295,6 +301,15 @@ public abstract class SpawnerBlockEntityMixin extends BlockEntity implements IEx
         tag.putBoolean("redstone_control", this.redstoneControl);
         tag.putBoolean("ignore_light", this.ignoresLight);
         tag.putBoolean("no_ai", this.hasNoAI);
+    }
+
+    /**
+     * @author embeddedt
+     * @reason needed to allow players to place spawners with NBT data
+     */
+    @Overwrite
+    public boolean onlyOpCanSetNbt() {
+        return false;
     }
 
     @Inject(method = "load", at = @At("HEAD"))

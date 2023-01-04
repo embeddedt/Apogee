@@ -17,6 +17,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -122,6 +123,11 @@ public class LyingLevel implements ServerLevelAccessor {
 	@Override
 	public RegistryAccess registryAccess() {
 		return wrapped.registryAccess();
+	}
+
+	@Override
+	public FeatureFlagSet enabledFeatures() {
+		return wrapped.enabledFeatures();
 	}
 
 	@Override

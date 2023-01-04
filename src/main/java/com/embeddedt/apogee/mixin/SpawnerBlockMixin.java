@@ -21,10 +21,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.BlockGetter;
@@ -61,23 +58,6 @@ public abstract class SpawnerBlockMixin extends BaseEntityBlock {
             ci.cancel();
     }
 
-    /**
-     * @author embeddedt
-     */
-    @Inject(method = "getCloneItemStack", at = @At("HEAD"), cancellable = true)
-    public void getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state, CallbackInfoReturnable<ItemStack> cir) {
-        ItemStack s = new ItemStack(this);
-        BlockEntity te = level.getBlockEntity(pos);
-        if (te != null) s.getOrCreateTag().put("BlockEntityTag", te.saveWithoutMetadata());
-        cir.setReturnValue(s);
-    }
-
-    @Override
-    public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-        BlockEntity te = world.getBlockEntity(pos);
-        if (te != null) te.load(stack.getOrCreateTagElement("BlockEntityTag"));
-    }
-
     @Override
     public void playerDestroy(Level world, Player player, BlockPos pos, BlockState state, BlockEntity te, ItemStack stack) {
         if (SpawnerModule.spawnerSilkLevel != -1 && EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, stack) >= SpawnerModule.spawnerSilkLevel) {
@@ -111,17 +91,12 @@ public abstract class SpawnerBlockMixin extends BaseEntityBlock {
         return InteractionResult.PASS;
     }
 
-    @Override
+    @Inject(method = "appendHoverText", at = @At("TAIL"))
     @Environment(EnvType.CLIENT)
-    public void appendHoverText(ItemStack stack, BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        if (stack.hasTag() && stack.getTag().contains("BlockEntityTag", Tag.TAG_COMPOUND)) {
+    public void appendHoverText(ItemStack stack, BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn, CallbackInfo ci) {
+        CompoundTag tag = BlockItem.getBlockEntityData(stack);
+        if (tag != null) {
             if (Screen.hasShiftDown()) {
-                CompoundTag tag = stack.getTag().getCompound("BlockEntityTag");
-                if (tag.contains("SpawnData")) {
-                    String name = tag.getCompound("SpawnData").getCompound("entity").getString("id");
-                    String key = "entity." + name.replace(':', '.');
-                    tooltip.add(concat(Component.translatable("misc.apogee.entity"), I18n.exists(key) ? I18n.get(key) : name));
-                }
                 if (tag.contains("MinSpawnDelay")) tooltip.add(concat(SpawnerStats.MIN_DELAY.name(), tag.getShort("MinSpawnDelay")));
                 if (tag.contains("MaxSpawnDelay")) tooltip.add(concat(SpawnerStats.MAX_DELAY.name(), tag.getShort("MaxSpawnDelay")));
                 if (tag.contains("SpawnCount")) tooltip.add(concat(SpawnerStats.SPAWN_COUNT.name(), tag.getShort("SpawnCount")));

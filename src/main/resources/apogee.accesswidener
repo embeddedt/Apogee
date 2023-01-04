@@ -14,6 +14,8 @@ accessible  field net/minecraft/world/level/BaseSpawner spawnRange I
 accessible  field net/minecraft/world/level/BaseSpawner oSpin D
 accessible  field net/minecraft/world/level/BaseSpawner spin D
 accessible  field net/minecraft/world/level/BaseSpawner nextSpawnData Lnet/minecraft/world/level/SpawnData;
+accessible  field net/minecraft/world/level/BaseSpawner displayEntity Lnet/minecraft/world/entity/Entity;
+accessible method net/minecraft/world/level/BaseSpawner getOrCreateNextSpawnData (Lnet/minecraft/world/level/Level;Lnet/minecraft/util/RandomSource;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/SpawnData;
 
 accessible  field net/minecraft/world/level/block/entity/BlockEntityType factory Lnet/minecraft/world/level/block/entity/BlockEntityType$BlockEntitySupplier;
 mutable  field net/minecraft/world/level/block/entity/BlockEntityType factory Lnet/minecraft/world/level/block/entity/BlockEntityType$BlockEntitySupplier;

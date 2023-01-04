@@ -10,8 +10,6 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 
-import javax.annotation.Nullable;
-
 @Mixin(FallingBlockEntity.class)
 public abstract class FallingBlockEntityMixin extends Entity {
 
@@ -19,7 +17,6 @@ public abstract class FallingBlockEntityMixin extends Entity {
         super(pType, pLevel);
     }
 
-    @Nullable
     @Override
     public ItemEntity spawnAtLocation(ItemLike pItem) {
         if (pItem instanceof INBTSensitiveFallingBlock) {
